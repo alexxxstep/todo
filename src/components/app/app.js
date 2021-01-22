@@ -17,6 +17,7 @@ export default class App extends Component {
       this.createTodoItem('Learn Typescript'),
     ],
     term: '',
+    filter: 'all', // all, active, done
   }
 
   createTodoItem(label) {
@@ -110,23 +111,44 @@ export default class App extends Component {
     })
   }
 
+  filter(items, filter) {
+    switch (filter) {
+      case 'all':
+        return items
+      case 'active':
+        return items.filter((item) => !item.done)
+      case 'done':
+        return items.filter((item) => item.done)
+      default:
+        return items
+    }
+  }
+
   onSearchChange = (term) => {
     this.setState({ term })
   }
 
+  onFilterChange = (filter) => {
+
+    this.setState({filter})
+  }
+
   render() {
-    const { todoData, term } = this.state
+    const { todoData, term, filter } = this.state
     const doneCount = todoData.filter((item) => item.done).length
     const todoCount = todoData.length - doneCount
 
-    const visibleItems = this.search(todoData, term)
+    const visibleItems = this.filter(this.search(todoData, term), filter)
 
     return (
       <div className='todo-app'>
         <AppHeader toDo={todoCount} done={doneCount} />
         <div className='top-panel d-flex'>
           <SearchPanel onSearchChange={this.onSearchChange} />
-          <ItemStatusFilter />
+          <ItemStatusFilter
+            filter={filter}
+            onFilterChange={this.onFilterChange}
+          />
         </div>
         <div className='top-panel d-flex'>
           <ItemAddForm addItem={this.addItem} />
