@@ -1,0 +1,14 @@
+.item-add-form {
+  margin-top: 10px;
+}
+
+.item-add-form input {
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.search-input {
+  width: auto;
+  flex-grow: 1;
+  margin-right: 3px;
+}
